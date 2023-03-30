@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+#include <unordered_set>
+
+using namespace std;
+
+struct Node {
+    unsigned int data;
+    Node* next;
+};
+
+Node* removeDuplicates(Node* head) {
+    unordered_set<int> set;
+    Node* current = head;
+    Node* previous = nullptr;
+
+    while (current != nullptr) {
+        if (set.find(current->data) != set.end()) {
+            previous->next = current->next;
+            delete current;
+            current = previous->next;
+        }
+        else {
+            set.insert(current->data);
+            previous = current;
+            current = current->next;
+        }
+    }
+
+    return head;
+}
+
+void printList(Node* head) {
+    while (head != nullptr) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    Node* head = nullptr;
+    Node* tail = nullptr;
+
+    for (int i = 0; i < n; i++) {
+        unsigned int data;
+        cin >> data;
+
+        Node* node = new Node;
+        node->data = data;
+        node->next = nullptr;
+
+        if (head == nullptr) {
+            head = node;
+            tail = node;
+        }
+        else {
+            tail->next = node;
+            tail = node;
+        }
+    }
+
+    head = removeDuplicates(head);
+
+    printList(head);
+
+    return 0;
+}
