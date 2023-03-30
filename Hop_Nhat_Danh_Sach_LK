@@ -1,0 +1,160 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct listNode{
+	int value;
+	struct listNode *next;
+};
+typedef struct listNode NODE;
+//khai bao con tro dau cua dslk
+struct listNode *head1, *head2, *head3;
+//tao 1 nut moi
+NODE *newNode(float x){
+	NODE *p;
+	p = (NODE *)malloc(1*sizeof(NODE));
+	p -> value = x;
+	p -> next = NULL;
+	return p;
+}
+//2. bo sung 1 node vao cuoi dslk 
+NODE *addNodeAtlast(NODE *head, NODE *p){
+	if(head == NULL)//dslk rong
+		head = p;
+	else{//dslk khac rong
+		NODE *tail = head;
+		while (tail->next!=NULL) tail = tail->next;
+		tail->next = p;
+		
+	}
+	return head;
+}
+//3. hien thi dslk
+void showlist(NODE *head){
+	NODE *p = head;
+	while(p!=NULL){
+		printf("%d ",p->value);
+		p = p->next;
+	}
+	printf ("\n");
+	
+}
+//5.chen 1 node vào sau 1 node trong dslk
+NODE *intsertNodeAtNext(NODE *head, NODE *q, NODE *p){
+	p->next=q->next;
+	q->next=p;
+	return head;
+}
+//6. chen 1 node vao troc 1 node trong dslk
+NODE *insertNodeAtPrevious(NODE *head, NODE *q, NODE *p){
+	//a. tim node dung truoc node q
+	NODE *t = head;
+	while (t->next != q) t = t->next;
+	//b. chen
+	
+	head = intsertNodeAtNext(head, t, p);
+	return head;
+}
+//7. xoa 1 node khoi dslk
+NODE *deleteNode(NODE *head, NODE *q){
+	if(q==head){
+		head = head->next;
+		free(q);
+	}
+	else {
+		//a.tim node t dung truoc node q
+		NODE *t = head;
+		while (t->next!=q) t = t->next;
+		
+		//b.noi
+		t->next = q->next;
+	}
+	free(q);
+	return head;
+}
+//4.bo sung 1 node vao dau dslk
+NODE *addNodeAtfirst(NODE *head, NODE *p){
+//	if(head==NULL) head = p;
+//	else{
+//		p->next = head;
+//		head = p;
+//	}
+	p->next = head;
+	head = p;
+	return head;
+}
+
+
+int main(){
+	NODE *p,*q, *t;
+    
+
+    int n, m;
+    scanf("%d%d", &n, &m);
+    int temp;
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &temp);
+        p = newNode(temp);
+	    head1 = addNodeAtlast(head1,p);
+    }
+
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &temp);
+        p = newNode(temp);
+	    head2 = addNodeAtlast(head2,p);
+    }
+
+    NODE *p1 = head1;
+    NODE *p2 = head2;
+    NODE *p3 = head3;
+    while (p1 != NULL && p2 != NULL) {
+        if (p1->value <= p2->value) {
+            temp = p1->value;
+            p1 = p1->next;
+        }  
+        else {
+            temp = p2->value;
+            p2 = p2->next;
+        }
+        p = newNode(temp);
+	    head3 = addNodeAtlast(head3,p);
+    }
+
+    if (p1 == NULL) {
+        while (p2 != NULL)
+        {
+            temp = p2->value;
+            p2 = p2->next;
+            p = newNode(temp);
+	        head3 = addNodeAtlast(head3,p);
+        }
+    }
+    if (p2 == NULL) {
+        while (p1 != NULL) {
+            temp = p1->value;
+            p1 = p1->next;
+            p = newNode(temp);
+	        head3 = addNodeAtlast(head3,p);
+        }
+    }
+
+
+	/*p = newNode(999);
+	head = addNodeAtlast(head,p);
+	p = newNode(111);
+	head = addNodeAtlast(head,p);
+	p = newNode(333);
+	q=p;
+	head = addNodeAtlast(head,p);
+	p = newNode(666);
+	head = addNodeAtlast(head,p);
+	
+	p = newNode(222);
+	head=insertNodeAtPrevious(head,q,p);
+	showlist(head);
+	//delete
+	head = deleteNode(head, q);
+	showlist(head);*/
+    
+    showlist(head3);
+	return 0;
+}
