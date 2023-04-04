@@ -1,0 +1,72 @@
+// danh sach lien ket don:
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+	int data;
+	Node *next;
+};
+ 
+typedef struct Node* node;
+ 
+//Cap phat dong mot node moi voi du lieu la so nguyen x
+node makeNode(int x){
+	node tmp = new Node();
+	tmp->data = x;
+	tmp->next = NULL; //nullptr
+	return tmp;
+}
+void insertFirst(node &a, int x){
+	node tmp = makeNode(x);
+	if(a == NULL){
+		a = tmp;
+	}
+	else{
+		tmp->next = a;
+		a = tmp;
+	}
+}
+//Them 1 phan tu vao cuoi dslk
+void insertLast(node &a, int x){
+	node tmp = makeNode(x);
+	if(a == NULL){
+		a = tmp;
+	}
+	else{
+		node p = a;
+		while(p->next != NULL){
+			p = p->next;
+		}
+		p->next = tmp;
+	}
+}
+void count(node &a,int k){
+	int dem =0;
+	for (node i=a; i != NULL; i = i->next){
+		if(i->data >= k){
+			dem++;
+		}
+	}
+	cout << dem <<endl;
+}
+int main(){
+	node p = NULL;
+	
+	string a,b;
+	int c;
+	do{
+		cin >> a;
+		if (a == "insL"){
+			cin >> b >>c;
+			insertLast(p,c);
+		}
+		else if (a == "insF"){
+			cin >> b >> c;
+			insertFirst(p, c);
+		}
+		else if(a == "count"){
+			cin >>c;
+			count(p,c);
+		}
+	}while(a != "fin");
+	return 0;
+}
