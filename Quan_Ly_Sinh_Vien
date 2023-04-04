@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef struct Sinhvien{
+	string holot;
+	string ten;
+	double diemthi;
+}sv;
+
+int main(){
+	
+	string str;
+	int dem = 0;
+	while (getline(cin, str)){//str luu du lieu cua mot sinh vien
+		//parse (split) (tach) thanh cac muc, dung 1 vector de luu
+		vector<sv> a;	
+		stringstream ss(str);
+		string temp;
+		vector<string> b;
+		while (getline(ss, temp, '|'))
+			b.push_back(temp);
+		//gan du lieu tu vector tren vao cac truong (field) tuong ung cua x (sv x)
+		sv x;
+		x.holot = b[0];
+		x.ten = b[1];
+		x.diemthi = stof(b[2]);
+		//push_back x vao a;
+		a.push_back(x);
+		if (dem == 0)
+		{
+			cout << "<?xml version=1 encoding=UTF-8?>" << endl;
+			dem = 1;
+		}
+	//duyet in vector 
+	
+		for (auto x : a)
+		{
+			if (x.diemthi >= 5)
+			{
+				cout << "<Student>" << endl;
+				cout << "   " << "<LastName>" << x.holot << "</LastName>" << endl;
+				cout << "   " << "<FirstName>" << x.ten << "</FirstName>" << endl;
+				cout << "   " << "<Mark>" << fixed << setprecision(2) << x.diemthi << "</Mark>" << endl;
+				cout << "</Student>" << endl;
+			}
+		}
+	}
+	
+	return 0;
+}
