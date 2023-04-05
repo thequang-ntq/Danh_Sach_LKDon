@@ -1,0 +1,91 @@
+#include<iostream>
+
+using namespace std;
+struct NODE{
+	int data;
+	struct NODE *next;
+};
+typedef struct NODE node;
+
+struct LIST{
+	node *pHead;
+	node *pTail;
+};
+typedef struct LIST list;
+
+void KhoiTao(list &l)
+{
+	l.pHead = NULL;
+	l.pTail = NULL;
+}
+
+node *KhoiTaoNode(int x)
+{
+	node *p = new node;
+	p->data = x;
+	p->next = NULL;
+	return p;
+}
+
+void ThemVaoCuoi(list &l, node *p)
+{
+	if(l.pHead == NULL)
+	{
+		l.pHead = l.pTail = p;
+	}
+	else
+	{
+		l.pTail->next = p;
+		l.pTail = p;
+	}
+}
+void XoaNode(list &l, node *p)
+{
+	if(p == l.pHead)
+	{
+		l.pHead = p->next;
+	}
+	else
+	{
+		node *t = l.pHead;
+		while(t->next != p) t = t->next;
+		t->next = p->next;
+	}
+}
+void Hienthi(list l)
+{
+	node *a = l.pHead;
+	while(a != NULL)
+	{
+		cout<<a->data<<" ";
+		a = a->next;
+	}
+}
+void DuyetXoaNode(int k, list &l)
+{
+	node *p = l.pHead;
+	while(p!=NULL)
+	{
+		if(k==0 && p->data %2==0) XoaNode(l,p);
+		if(k==1 && p->data %2==1) XoaNode(l,p);
+		p = p->next;
+	}
+}
+int main()
+{
+	list l;
+	node *q;
+	KhoiTao(l);
+	int n,k;
+	cin>>n>>k;
+	for(int i=1;i<=n;i++)
+	{
+		int x;
+		cin>>x;
+		node *p = KhoiTaoNode(x);
+		ThemVaoCuoi(l,p);
+	}
+	DuyetXoaNode(k,l);
+	Hienthi(l);
+	return 0;
+}
