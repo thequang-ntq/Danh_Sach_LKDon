@@ -1,0 +1,159 @@
+#include<iostream>
+
+using namespace std;
+struct NODE{
+	int data;
+	struct NODE *next;
+};
+typedef struct NODE node;
+
+struct LIST{
+	node *pHead;
+	node *pTail;
+};
+typedef struct LIST list;
+
+void KhoiTao(list &l)
+{
+	l.pHead = NULL;
+	l.pTail = NULL;
+}
+
+node *KhoiTaoNode(int x)
+{
+	node *p = new node;
+	p->data = x;
+	p->next = NULL;
+	return p;
+}
+
+void ThemVaoCuoi(list &l, node *p)
+{
+	if(l.pHead == NULL)
+	{
+		l.pHead = l.pTail = p;
+	}
+	else
+	{
+		l.pTail->next = p;
+		l.pTail = p;
+	}
+}
+
+void ThemVaoDau(list &l, node *p)
+{
+	if(l.pHead == NULL)
+	{
+		l.pHead = l.pTail = p;
+	}
+	else
+	{
+		p->next = l.pHead;
+		l.pHead =p;
+	}
+}
+
+void Chensau(list &l,node *q, node*p)
+{
+	p->next = q->next;
+	q->next = p;
+}
+
+void Chentruoc(list &l,node *q, node*p)
+{
+	node *t =l.pHead;
+	while(t->next!=q) t = t->next;
+	Chensau(l,t,p);
+}
+void XoaNode(list &l, node *p)
+{
+	if(p == l.pHead)
+	{
+		l.pHead = p->next;
+	}
+	else
+	{
+		node *t = l.pHead;
+		while(t->next != p) t = t->next;
+		t->next = p->next;
+	}
+}
+void Hienthi(list l)
+{
+	node *a = l.pHead;
+	while(a != NULL)
+	{
+		cout<<a->data<<" ";
+		a = a->next;
+	}
+}
+node *Timpos(int k,list &l)
+{
+	int i =0;
+	node *p = l.pHead;
+	while(p!=NULL)
+	{
+		if(i==k) return p;
+		else{
+			i=i+1;
+			p = p->next;
+		}
+	}
+}
+void Duyet(node *q,int k,int n, list &l)
+{
+	node *p = l.pHead;
+	node *j = q;
+	int i=0;
+	while(p!=NULL)
+	{
+		if(p->data > q->data && i<k) 
+		{
+			node *b = KhoiTaoNode(p->data);\
+			if(k==n){
+				ThemVaoCuoi(l,b);
+				XoaNode(l,p);
+			}
+			else{
+			Chensau(l,j,b);
+			j = b;
+			XoaNode(l,p);
+			}
+			k=k-1;
+		}
+		if(p->data < q->data && i>k) 
+		{
+			node *b = KhoiTaoNode(p->data);
+			if(k==0){
+				ThemVaoDau(l,b);
+				XoaNode(l,p);
+			}
+			else{
+			Chentruoc(l,q,b);
+			XoaNode(l,p);
+			}
+			k=k+1;
+		}
+		i=i+1;
+		p = p->next;
+	}
+}
+int main()
+{
+	list l;
+	node *q;
+	KhoiTao(l);
+	int n,k;
+	cin>>n>>k;
+	for(int i=1;i<=n;i++)
+	{
+		int x;
+		cin>>x;
+		node *p = KhoiTaoNode(x);
+		ThemVaoCuoi(l,p);
+	}
+	q = Timpos(k,l);
+	Duyet(q,k,n,l);
+	Hienthi(l);
+	return 0;
+}
