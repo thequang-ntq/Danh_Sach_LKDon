@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef struct SV{ 
+	string hodem;
+	string ten; 
+	double diem;
+	struct Node *next; 
+}List;
+bool Sosanh(List sv1, List sv2){
+	return sv1.diem > sv2.diem;
+}
+int main(){
+	List *F = NULL; 
+	string s;
+	vector<List>DS;
+	while(getline(cin,s)){
+		if(s == "\0") break;
+		stringstream ss(s);
+		string item;
+		vector<string>student;
+		while(getline(ss, item, ',')){
+			student.push_back(item);
+		}
+		List sinhvien;
+		sinhvien.hodem = student[0]; sinhvien.ten = student[1]; sinhvien.diem = stof(student[2]);
+		DS.push_back(sinhvien);
+	}
+	// sapxepgiamdandiemthi
+	sort(DS.begin(), DS.end(), Sosanh);
+	cout<<"<?xml version=1 encoding=UTF-8?>" << endl;
+	for(auto student: DS){
+		if(student.diem >= 5.00){
+			cout<<"<Student>" << endl;
+			cout << "   " << "<LastName>" << student.hodem << "</LastName>" << endl;
+			cout << "   " << "<FirstName>" << student.ten << "</FirstName>" << endl;
+			cout << "   " << "<Mark>" << fixed << setprecision(2) << student.diem << "</Mark>" << endl;
+			cout << "</Student>" << endl;
+		}
+	}
+	return 0;
+}
+/*
+Ho Minh,Duy,0.19
+Bui Quoc,Viet,5.08
+Cao Quoc,Quy,9.66
+Mai Thi Mot,Tan,4.88
+Phan Anh,Cuong,6.43
+*/
