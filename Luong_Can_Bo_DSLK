@@ -1,0 +1,136 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define double long double
+#define taskname "__Quang__"
+#define MO ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr)
+using namespace std;
+typedef struct Node{ //Node = nút = phần tử
+	string ten;
+	ll luong;
+	double hsl;
+	struct Node *next; //trường con trỏ, trỏ đến phần tử có cấu trúc y như nó.
+}List;
+List *make_node(string vten, ll vluong, double vhsl){
+	List *tmp = new List;
+	tmp -> ten = vten;
+	tmp -> luong = vluong;
+	tmp -> hsl = vhsl;
+	tmp -> next = nullptr;
+	return tmp;
+}
+void insertFirst(string vten, ll vluong, double vhsl, List *& F){
+	List *q = make_node(vten, vluong, vhsl);
+	if(F == NULL) F = q;
+	else{
+		q -> next = F; //(b.1)
+		F = q; //(b.2)
+	}	
+}
+void insertLast(string vten, ll vluong, double vhsl, List *& F){
+	List *q = make_node(vten, vluong, vhsl);
+	if(F == NULL) F = q; //(a) hình vẽ
+	else{
+		List *last = F; //last là con trỏ đến phần tử cuối danh sách
+		while(last -> next != NULL){
+			last = last -> next;
+		}
+		last -> next = q; //hình vẽ (b)
+	}
+}
+//void insertBeforeP(int x, List *& F, List *p){ //chèn trước con trỏ p, p khác rỗng và F khác rỗng
+//	List *q = make_node(x);
+//	List *bp = F;
+//	while(bp -> next != p){ //xác định con trỏ đứng trước p
+//		bp = bp -> next;
+//	} //bp la 15
+//	q -> next = p; // (1)
+//	bp -> next = q; // (2)
+//}
+//void insertAfterP(int x, List *& F, List *p){
+////Tương tự;	
+//}
+void deleteFirst(List *& F){
+	if(F != NULL){
+		List *p = F;
+		F = F -> next;
+		delete(p);
+	}
+}
+void deleteLast(List *& F){
+	if(F != NULL){
+		List *p = F, *bp;
+		while(p -> next != NULL){
+			bp = p;
+			p = p -> next;
+		}
+		bp -> next = NULL;
+		delete p;
+	}
+}
+void traverse(List *F, double vhsl){
+	List *p = F;
+	while(p != NULL){
+		if(p -> hsl == vhsl) cout << p -> ten << " ";
+		p = p -> next; 
+	}
+}
+double Sum(List * F){
+	double s = 0;
+	List *p = F;
+	while(p != NULL){
+		s += (p -> hsl) * 1390000;
+		p = p -> next;
+	}
+	return s;
+}
+int main(){
+	MO;
+	List *F = nullptr;
+	string s;
+	while(cin >> s){
+		if(s == "fin") break;
+		else if(s == "insF"){
+			string a; ll b; double c;
+			cin>> a >> b >> c;
+			insertFirst(a, b, c, F);
+		}
+		else if(s == "insL"){
+			string a; ll b; double c;
+			cin>> a >> b >> c;
+			insertLast(a,b,c,F);
+		}
+		else if(s == "sum"){
+			cout<< fixed << setprecision(3) <<  Sum(F) << '\n';
+		}
+		else if(s == "list"){
+			double c; cin>>c;
+			traverse(F, c);
+		}
+	}
+	return 0;
+}
+/*
+insL TruongTruongQuy 1123583199 2.59
+insL NguyenMinhCuong 1123583145 2.77
+insL BuiThiGiang 9437077415 6.04
+insL NgoAnhQuyen 6178538190 7.28
+insL DangQuangViet 9987527965 6.92
+insL QuachDucPhat 1673033695 6.92
+insL MaiThiNhat 4932572910 6.92
+insL PhamMinhPhot 1123583145 3.49
+insL VoVanKha 9437077415 2.77
+insL HuynhGiaNgoc 6178538190 4.03
+insF CaoDucQuang 9987527965 7.64
+insF MaiDucViet 1673033695 4.34
+insF NgoThiHuy 4932572910 3.49
+insF HoVanSinh 1123583145 4.68
+insF NgoTrongThu 9437077415 2.95
+insF NgoQuangTan 6178538190 4.68
+insF PhamTrongBinh 9987527965 7.28
+insF CaoAnhMy 1673033695 3.49
+insF PhanDinhQuy 4932572910 6.92
+insF NgoQuangNhat 1123583145 2.41
+sum
+list 6.92
+fin
+*/
