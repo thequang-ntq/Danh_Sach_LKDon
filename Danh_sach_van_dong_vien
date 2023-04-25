@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+	string name;
+	int bib, age;
+	Node *next;
+};
+typedef struct Node *node;
+node makenode(string vname, int vbib, int vage){
+	node tmp=new Node();
+	tmp->name=vname;
+	tmp->bib=vbib;
+	tmp->age=vage;
+	tmp->next=NULL;
+	return tmp;
+}
+void insert(node &a, string name, int bib, int age){
+	node tmp=makenode(name, bib, age);
+	if(a==NULL){
+		a=tmp;
+	}
+	else{
+		tmp->next=a;
+		a=tmp;
+	}
+}
+void sapxep(node &a){
+	for(node p=a; p!=NULL; p=p->next){
+		for(node q=p->next; q!=NULL; q=q->next){
+			if(p->bib > q->bib){
+				swap(p->name, q->name);
+				swap(p->bib, q->bib);
+				swap(p->age, q->age);
+			}
+		}
+	}
+}
+void in(node a){
+	while(a!=NULL){
+		cout<<a->bib<<" ";
+		a=a->next;
+	}
+	cout<<endl;
+}
+void find(node a, int vbib){
+	while(a!=NULL){
+		if(a->bib==vbib){
+			cout<<a->bib<<" "<<a->name<<" "<<a->age<<endl;
+			return;
+		}
+		else a=a->next;
+	}
+	cout<<vbib<<" No"<<endl;
+}
+
+int main(){
+	node a=NULL;
+	while(1){
+		string s, name; int bib, age;
+		cin>>s;
+		if(s=="ins"){
+			cin>>name>>bib>>age;
+			insert(a,name,bib,age);
+			sapxep(a);
+		}
+		else if(s=="prtlist"){
+			in(a);
+		}
+		else if(s=="find"){
+			cin>>bib;
+			find(a,bib);
+		}
+		else if(s=="end"){
+			break;
+		}
+	}
+}
