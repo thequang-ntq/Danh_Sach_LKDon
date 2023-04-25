@@ -1,0 +1,161 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define double long double
+#define taskname "__Quang__"
+#define MO ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr)
+using namespace std;
+typedef struct Node{ 
+	int data;
+	struct Node *next; 
+}List;
+List *tail = NULL;
+List *make_node(int x){
+	List *tmp = new List;
+	tmp -> data = x;
+	tmp -> next = nullptr;
+	return tmp;
+}
+void insertFirst(int x, List *& F){
+	List *q = make_node(x);
+	if(F == NULL){
+		F = q;
+		tail = F;
+	}
+	else{
+		q -> next = F; 
+		F = q; 
+	}	
+}
+void insertLast(int x, List *& F){
+	List *q = make_node(x);
+	if(F == NULL){
+		F = q;
+		tail = F;
+	}
+	else{
+		tail -> next = q;
+		tail = tail -> next;
+	}
+}
+void insertBeforeP(int x, List *& F, List *p){ 
+	List *q = make_node(x);
+	List *bp = F;
+	while(bp -> next != p){ 
+		bp = bp -> next;
+	} 
+	q -> next = p; 
+	bp -> next = q; 
+}
+void insertAfterP(int x, List *& F, List *p){
+	List *q = make_node(x);
+	List *bp = F;
+	while(bp != p -> next){
+		bp = bp -> next;
+	}	
+	q -> next = bp;
+	p -> next = q;
+}
+void deleteFirst(List *& F){
+	if(F != NULL){
+		List *p = F;
+		F = F -> next;
+		delete(p);
+	}
+}
+void deleteLast(List *& F){
+	if(F != NULL){
+		List *p = F, *bp;
+		while(p -> next != NULL){
+			bp = p;
+			p = p -> next;
+		}
+		bp -> next = NULL;
+		delete p;
+	}
+}
+void traverse(List *F, int x){
+	List *p = F;
+	while(p != NULL){
+		if(p -> data == x) cout << p -> data << " ";
+		p = p -> next; 
+	}
+}
+void deleteNode(List *& F, int y){
+	if(F != NULL){
+		Node *p, *q, *pre;
+		p = make_node(y);
+		q = F;
+		while(q != NULL && q -> data != y){
+			pre = q;
+			q = q -> next;
+		}
+		if(q == NULL){
+			cout<<"Khong co nut co gia tri y" << endl;
+		}
+		else{
+			if(q == F){
+				F = F -> next;
+				delete q;
+			}
+			else{
+				pre -> next = q -> next;
+				delete q;
+			}	
+		}
+	}
+}
+//Xoa tat ca cac nut co gia tri y khoi danh sanh
+void deleteAll(Node *& F, int y){
+	if(F != NULL){
+		int cnt = 0;
+		Node *p, *q, *pre;
+		p = make_node(y);
+		q = F;
+		while(q != NULL){
+			if(q -> data == y) cnt++;
+			q = q -> next;
+		}
+		if(cnt == 0){
+			cout<<"Khong co nut co gia tri y" << endl;
+		}
+		else{
+			while(cnt--){
+				Node *t= F;
+				while(t != NULL && t -> data != y){
+					pre = t;
+					t = t -> next;
+				}
+				if(t == F){
+					F = F -> next;
+					delete t;
+				}
+				else{
+					pre -> next = t -> next;
+					delete t;
+				}	
+			}
+		}
+	}
+}
+void Sort(List *F){
+	List *p = F;
+	List *q;
+	int tam;
+	while(p != NULL){
+		q = p -> next;
+		while(q != NULL){
+			if(p -> data > q -> data){
+				tam = p -> data;
+				p -> data = q -> data;
+				q -> data = tam;
+			}
+			q = q -> next;
+		}
+		p = p -> next;
+	}
+}
+int main(){
+	MO;
+	List *F = nullptr;
+	return 0;
+}
