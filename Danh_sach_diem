@@ -1,0 +1,81 @@
+#pragma GCC optimize("Ofast")
+#include<bits/stdc++.h>
+using namespace std;
+typedef struct Node{ 
+	string name;
+	int mark; 
+	struct Node *next; 
+}List;
+List *tail = NULL;
+List *make_node(string vname, int vmarks){
+	List *tmp = new List;
+	tmp -> name = vname;
+	tmp -> mark = vmarks;
+	tmp -> next = nullptr;
+	return tmp;
+}
+void insertLast(List *& F, string vname, int vmarks){
+	List *q = make_node(vname, vmarks);
+	if(F == NULL){
+		F = q;
+		tail = F;
+	}
+	else{
+		tail -> next = q;
+		tail = tail -> next; 
+	}
+}
+void deleteFirst(List *& F){
+	if(F != NULL){
+		List *p = F;
+		F = F -> next;
+		delete(p);
+	}
+}
+int count(List *F, int vmarks){
+	int cnt =0;
+	if(F == NULL) return 0;
+	else{
+		List *p = F;
+		while(p != NULL){
+			if(p -> mark <= vmarks) cnt++;
+			p = p-> next;
+		}
+		return cnt;
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+	List *F = NULL; 
+	string s;
+	while(cin>>s){
+		if(s=="ins"){
+			string vname; int vmarks;
+			cin>> vname >> vmarks;
+			insertLast(F, vname, vmarks);
+		}
+		else if(s == "del"){
+			deleteFirst(F);
+		}
+		else if(s == "count"){
+			int x; cin>>x;
+			cout << count(F, x) << '\n';
+		}
+		else if(s== "fin") break;
+ 	}
+	return 0;
+}
+/*
+ins hoa 6
+ins hung 3
+ins ha 2
+ins quy 4
+del
+ins tuan 9
+count 3
+ins mai 5
+ins van 10
+del
+count 5
+fin
+*/
