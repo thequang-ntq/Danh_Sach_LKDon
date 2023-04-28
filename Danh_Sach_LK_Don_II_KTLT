@@ -1,0 +1,169 @@
+#pragma GCC optimize("Ofast")
+#include<bits/stdc++.h>
+using namespace std;
+typedef struct Node{ 
+	string name;
+	int gpa;
+	bool gender; 
+	struct Node *next; 
+}List;
+List *tail = NULL;
+List *make_node(string vname, int vgpa, bool vgender){
+	List *tmp = new List;
+	tmp -> name = vname;
+	tmp -> gpa = vgpa;
+	tmp -> gender = vgender;
+	tmp -> next = nullptr;
+	return tmp;
+}
+void insertLast(List *& F, string vname, int vgpa, bool vgender){
+	List *q = make_node(vname, vgpa, vgender);
+	if(F == NULL){
+		F = q;
+		tail = F;
+	}
+	else{
+		bool u = false;
+		List *p = F;
+		while(p != NULL){
+			if(p -> name == q -> name && p -> gender == q -> gender){
+				p -> gpa = q -> gpa;
+				u = true;
+				break;
+			}
+			p = p -> next;
+		}
+		if(!u){
+			tail -> next = q;
+			tail = tail -> next;
+		}
+		
+	}
+}
+void deleteF(List *& F, string vname){
+	if(F != NULL){
+		List *p = F;
+		List *bp = F;
+		int cnt =0;
+		while(p != NULL){
+			if(p -> name == vname){
+				if(cnt == 0){
+					F = F -> next;
+					delete p;
+					break;
+				}
+				else{
+					bp-> next = p -> next;
+					delete p;
+					break;
+				}
+			}
+			cnt++;
+			bp = p;
+			p = p -> next;
+		}
+	}
+}
+void traverse(List * F){
+	List *p = F;
+	while(p != NULL){
+		cout<< p -> gpa << " ";
+		p = p -> next;
+	}
+	cout<< '\n';
+}
+void Sort(List *& F){
+	List *p = F;
+	List *q;
+	string vname; int vgpa; bool vgender;
+	while(p != NULL){
+		q = p -> next;
+		while(q != NULL){
+			if(p -> name > q -> name){
+				vname = p -> name; vgpa = p -> gpa; vgender = p -> gender;
+				p -> name = q -> name; p -> gpa = q -> gpa; p -> gender = q -> gender;
+				q -> name = vname; q->gpa = vgpa; q -> gender = vgender;
+			}
+			q = q -> next;
+		}
+		p = p -> next;
+	}
+}
+bool check(List *F){
+	List *q = F;
+	while(q -> next != NULL){
+		List *a = q->next;
+		if(q -> name > a -> name ){
+			return false;
+		}
+		q = q->next;
+	}
+	return true;
+}
+int count(List * F, int x){
+	List * q = F;
+	int res = 0;
+	int nu = 0, nam =0 ;
+	while(q != NULL){
+		if(q -> gender == false){
+			nu++;
+		}
+		else nam++;
+		q = q-> next;
+	}
+	if(x == 0) return nu;
+	else if(x == 1) return nam;
+	else return (nu + nam);
+}
+int main(){
+	ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+	List *F = NULL; 
+	string s;
+	while(cin>>s){
+		if(s=="ins"){
+			string vname; int vgpa; bool vgender;
+			cin>> vname >> vgpa >> vgender;
+			insertLast(F, vname, vgpa, vgender);
+		}
+		else if(s == "dir"){
+			traverse(F);
+		}
+		else if(s == "ord"){
+			Sort(F);
+		}
+		else if(s == "chk"){
+			if(check(F) ) cout<<"YES" << '\n';
+			else cout<<"NO"<<'\n';
+		}
+		else if(s == "del"){
+			string vname; cin>>vname;
+			deleteF(F, vname);
+		}
+		else if(s == "cnt"){
+			int x; cin>>x;
+			cout<<count(F, x) << '\n';
+		}
+		else if(s== "end") break;
+ 	}
+	return 0;
+}
+/*
+ins hung 4 1
+ins long 3 1
+ins hong 5 0
+dir
+ins dung 4 1
+dir
+ord 
+dir
+chk
+ins long 5 1
+ins bao 2 0
+dir
+chk
+cnt 2
+cnt 0 
+del hung
+cnt 2
+end
+*/
