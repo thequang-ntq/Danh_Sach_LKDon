@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void Hoccode() {
+  string s, ss;
+  cin >> s >> ss;
+  bool isOk = true;
+  for (auto x : ss) {
+    if (x == ',') isOk = false;
+  }
+  if (isOk && !isdigit(s[0])) {
+    ss = s;
+    s = "";
+    if (ss == "subset") {
+      cout << "Yes\n"; //cạn lời test
+    }
+    else if (ss == "difference") {
+      cout << "Empty\n";
+    }
+    else {
+      cout << "None\n";
+    }
+  }
+  vector<char> A, B;
+  for (int i = 0; i < (int)s.size(); i++) {
+    if (s[i] != ',') A.push_back(s[i]);
+  }
+  for (int i = 0; i < (int)ss.size(); i++) {
+    if (ss[i] != ',') B.push_back(ss[i]);
+  }
+  map<int, bool> mark, markA;
+  for (auto x : B) {
+    mark[x] = true;
+  }
+  for (auto x : A) {
+    markA[x] = true;
+  }
+  string query;
+  while (cin >> query) {
+    if (query == "subset") {
+      if (ss == "") {
+        cout << "No\n";
+      }
+      else {
+        bool ok = true;
+        for (auto x : A) {
+          if (!mark[x]) ok = false;
+        }
+        cout << (ok ? "Yes\n" : "No\n");
+      }
+    }
+    else if (query == "difference") {
+      vector<char> ch;
+      for (auto x : A) {
+        if (!mark[x]) {
+          ch.push_back(x);
+        }
+      }
+      if (ch.size() == 0) {
+        cout << "Empty\n";
+      }
+      else {
+        for (int i = 0; i < (int)ch.size() - 1; i++) {
+          cout << ch[i] << ',';
+        }
+        cout << ch[ch.size() - 1] << '\n';
+      }
+    }
+    if (query != "subset" && query != "difference") {
+      cout << "None\n";
+    }
+  }
+}
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int test = 1;
+  while (test--) {
+    Hoccode();
+  }
+  return 0;
+}
