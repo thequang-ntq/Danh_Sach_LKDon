@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+struct node 
+{
+	int nu;
+	node *next;
+};
+void chenCuoi(node *&h, int numb);
+int max(node *h, int sLPT);
+
+
+int main()
+{
+	node *head = NULL;
+	int N;
+	cin >> N;
+	int num;
+	for(int i = 1; i <= N; i++)
+	{
+		cin >> num;
+		chenCuoi(head, num);
+	}
+	cout << max(head, N);
+
+	return 0;
+}
+void chenCuoi(node *&h, int numb)
+{
+	node *temp = new node;
+	temp->nu = numb;
+	temp->next = NULL;
+
+	if(h == NULL)
+		h = temp;
+	else
+	{
+		node *pC = h;
+		while(pC -> next != NULL)
+			pC = pC ->next;
+
+		pC ->next = temp;
+	}
+}
+int max(node *h, int sLPT)
+{
+	if(sLPT == 1 || sLPT == 2)
+		return -1;
+	else//sLPT >= 3
+	{
+		int max = -1;
+		node* temp = h;
+		h = h -> next;
+		while(h -> next ->next != NULL)
+		{
+			if(h -> nu > temp ->nu && h->nu > (h ->next)->nu)
+			{
+				if(max == -1)
+					max = h ->nu;
+				else
+				{
+					if(max < h -> nu)
+						max = h ->nu;
+				}
+			}
+			temp = h;
+			h = h ->next;
+		}
+
+		return max;
+	}
+}
