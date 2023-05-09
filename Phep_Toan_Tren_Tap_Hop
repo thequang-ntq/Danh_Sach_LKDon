@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+set<string> tach(string s){
+	stringstream ss(s);
+	string tmp;
+	set<string> se; 
+	while(getline(ss,tmp,',')){
+		se.insert(tmp); 
+	} 
+	return se; 
+} 
+void printSet(set<string> s) {
+    if (s.empty()) {
+        cout << "Empty";
+    } else {
+    	string ans="";
+        for (auto it = s.begin(); it != s.end(); ++it) {
+            ans+=*it;
+			ans+=" ";
+        }
+        for(int i=0;i<ans.size();i++){
+				if(i+1<ans.size() && isspace(ans[i])){
+					cout<<",";
+				}
+				else cout<<ans[i];
+			}
+    }
+    cout << endl;
+}
+int main(){
+	string a;cin>>a;
+	string b;cin>>b;
+	set<string> A=tach(a);
+	set<string> B=tach(b);
+	set<string> C=A,D; 
+	for(auto it:B){
+		if(A.count(it)) D.insert(it); 
+		C.insert(it);
+	} 
+	string s;
+	while(cin>>s){
+		if(s=="union"){
+			printSet(C); 
+		} 
+		else if(s=="intersect"){
+			printSet(D); 
+		} 
+		else{
+			cout<<"None"<<endl; 
+		} 
+	} 
+} 
