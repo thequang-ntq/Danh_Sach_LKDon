@@ -1,0 +1,155 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+	int data;
+	Node *next;
+};
+Node *make_node(int x){
+	Node *tmp=new Node;
+	tmp->data=x;
+	tmp->next=NULL;
+	return tmp;
+}
+int size(Node *head){
+	int cnt=0;
+	while(head!=NULL){
+		cnt++;
+		head=head->next;
+	}
+	return cnt;
+}
+void insertfirst(Node *&head,int x){
+	Node *tmp=make_node(x);
+	if(head==NULL){
+		head=tmp;
+	}
+	else{
+		tmp->next=head;
+		head=tmp;
+	}
+}
+void sapxep(Node *&head){
+	if(head==NULL) return ;
+	Node *pre=NULL;
+	Node *p=head;
+	while(p!=NULL){
+		Node *next=p->next;
+		if(pre==NULL || pre->data > p->data){
+			p->next=pre;
+			pre=p;
+		}
+		else{
+			Node *tmp=pre;
+			while(tmp->next!=NULL && tmp->next->data<p->data){
+				tmp=tmp->next;
+			}
+			p->next=tmp->next;
+			tmp->next=p;
+		}
+		p=next;
+	}
+	head=pre;
+}
+void inserthead(Node *&head,int x){
+	insertfirst(head,x);
+	sapxep(head);
+}
+void deletemiddle(Node *&head,int pos){
+	if(head==NULL) return;
+	if(pos==1){
+		Node *tmp=head;
+		head=head->next;
+		delete tmp;
+		return; 
+	} 
+	Node *prev=NULL;
+	Node *p=head;
+	int i=1;
+	while(p!=NULL && i!=pos){
+		prev=p;
+		p=p->next;
+		i++; 
+	} 
+	if(p==NULL){
+		return; 
+	} 
+	prev->next=p->next;
+	delete p; 
+} 
+void deletedata(Node *&head,int x){
+	for (Node *i = head; i!= nullptr; i=i->next){
+		for (Node *j = i->next;j!=nullptr;j = j->next){
+			if (j->data == x) i->next = j->next;
+		}
+	}
+}
+void dup(Node *&head){
+	Node *truoc=head;
+	Node *sau=head->next;
+	while(sau!=NULL){
+		if(truoc->data==sau->data){
+			truoc->next=sau->next;
+		}
+		truoc=sau;
+		sau=sau->next;
+	}
+}
+void rvs(Node *&head){
+	Node *tmp1=NULL;
+	Node *tmp2=head;
+	Node *tmp3=NULL;
+	while(tmp2!=NULL){
+		tmp3 = tmp2 ->next;
+		tmp2 -> next = tmp1;
+		tmp1 = tmp2;
+		tmp2 = tmp3;
+	}
+	head=tmp1;
+}
+void xuat(Node *head){
+	while(head!=NULL){
+		cout<<head->data<<" ";
+		head=head->next;
+	}
+	cout<<endl;
+}
+int main(){
+	string s;
+	Node *head=NULL;
+	while(cin>>s){
+		if(s=="dir"){
+			xuat(head);
+		}
+		else if(s=="rvs"){
+			rvs(head);
+		}
+		else if(s=="ord"){
+			sapxep(head);
+		}
+		else if(s=="dup"){
+			dup(head);
+		}
+		else if(s=="del"){
+			int x;cin>>x;
+			deletedata(head,x);
+		}
+		else if(s=="ins"){
+			int y;cin>>y;
+			inserthead(head,y);
+		}
+		else if(s=="cnt"){
+			cout<<size(head)<<endl;
+		}
+		else if(s=="end"){
+			break;
+		}
+		else {
+			stringstream ss(s);
+			int tmp;
+			while(ss>>tmp){
+				insertfirst(head,tmp);
+			}
+		}
+	}
+	return 0;
+}
