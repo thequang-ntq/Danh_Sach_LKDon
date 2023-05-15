@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+using namespace std;
+
+struct SinhVien {
+    string hoTen;
+    string truong;
+    double diem;
+};
+
+void inDanhSachSinhVienGioi(SinhVien* dssv, int n) {
+    
+    for (int i = 0; i < n; i++) {
+        if (dssv[i].diem >= 8) {
+            cout << dssv[i].hoTen << "," << dssv[i].truong << "," << dssv[i].diem << endl;
+        }
+    }
+}
+
+bool compareSinhVien(const SinhVien& sv1, const SinhVien& sv2) {
+    if (sv1.truong == sv2.truong) {
+        return sv1.diem > sv2.diem;
+    } else {
+        return sv1.truong < sv2.truong;
+    }
+}
+
+
+int main() {
+    int n;
+   
+    cin >> n;
+if (n>0){
+
+    SinhVien* dssv = new SinhVien[n];
+    for (int i = 0; i < n; i++) {
+       
+     
+        cin.ignore();
+        getline(cin, dssv[i].hoTen,',');
+        getline(cin, dssv[i].truong,',');
+        cin >> dssv[i].diem;
+        
+    }
+
+    inDanhSachSinhVienGioi(dssv, n);
+
+    
+
+   
+    delete[] dssv;
+}
+    return 0;
+}
