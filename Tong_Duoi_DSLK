@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node {
+	int data;
+	node *next;
+};
+
+void chenCuoi(node *&F, int x)
+{
+	node *q = new (node);
+	q -> data = x;
+	q -> next = NULL;
+	if (F == NULL)
+		F = q;
+	else
+	{
+		node *last = F;
+		while (last -> next != NULL)
+			last= last -> next;
+		last -> next = q;
+	}
+}
+
+void Daonguoc(node *&F)
+{
+	//Dao nguoc danh sach
+	node *c = F, *p = NULL, *n = NULL;
+	while (c != NULL)
+	{
+		n = c->next;
+		c->next = p;
+		p = c;
+		c = n;
+	}
+	F = p;
+}
+
+long long Sum(node *F, int k)
+{
+	long long S = 0;
+	int dem = 0;
+	node *p = F;
+	while (p != NULL)
+	{
+		if (p->data > 0)
+		{
+			S += p -> data;
+			dem++;
+		}
+		if (dem == k)
+			break;
+		p = p -> next;
+	}
+	return S;
+}
+
+int main()
+{
+	int n, x, k;
+	cin >> n >> k;
+	node *F = NULL;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		chenCuoi(F, x);
+	}
+	Daonguoc(F);
+	cout << Sum(F, k);
+	
+	return 0;
+}
