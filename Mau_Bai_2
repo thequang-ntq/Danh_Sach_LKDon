@@ -1,0 +1,233 @@
+#pragma GCC target("avx2")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
+#include<bits/stdc++.h>
+#include<math.h>
+#include<set>
+#include<map>
+#include<limits.h>
+#pragma __HELLO__
+#pragma one
+#pragma GCC optimize("Ofast")
+#ifdef LOCAL_DEBUG
+#include "algo/debug.h"
+#else
+#define debug(...) 42 
+#define MO ios_base :: sync_with_stdio (0); cin.tie (0); cout.tie(0);
+#endif
+using namespace std;
+typedef struct Node 
+{
+	int data;
+	Node *link;
+} Node;
+
+void InsertHead(Node *& list, int x)
+{
+	Node *p = new Node;
+	p->data = x;
+	if (list == NULL)
+	{
+		p->link = NULL;
+		list = p;
+	}
+	else
+	{
+		p->link = list;
+		list = p;
+	}
+}
+
+void CreateList(Node *& list, string s)
+{
+	stringstream ss(s);
+	int x;
+	while(ss >> x)
+	{
+		InsertHead(list, x);
+	}
+}
+
+void ShowList(Node *list)
+{
+	while(list != NULL)
+	{
+		cout << list->data << " ";
+		list = list->link;
+	}
+	cout << endl;
+}
+
+void ReverseList(Node *& list)
+{
+	Node *cur = list, *next = NULL;
+	list = NULL;
+	while(cur != NULL)
+	{
+		next = cur->link;
+		cur->link = list;
+		list = cur;
+		cur = next;
+	}
+}
+
+void SortList(Node *& list)
+{
+	Node *i, *j;
+	for(i=list; i->link != NULL; i=i->link)
+		for(j=i->link; j != NULL; j=j->link)
+			if (i->data > j->data)
+			{
+				int temp = i->data;
+				i->data = j->data;
+				j->data = temp;
+			}
+}
+
+void DuplicationList(Node *& list)
+{
+	Node *i = list;
+	while(i->link != NULL)
+	{
+		Node *j = i->link;
+		while(j != NULL)
+		{
+			Node *pre;
+			if (i->data == j->data)
+			{
+				if (j == i->link)
+				{
+					i->link = j->link;
+					delete j;
+					j = i->link;
+				}
+				else
+				{
+					pre->link = j->link;
+					delete j;
+					j = pre->link;
+				}					
+			}
+			else
+			{
+				pre = j;
+				j = j->link;
+			}		
+		}
+		i = i->link;
+	}
+}
+
+int SizeList(Node *list)
+{
+	int count = 0;
+	while(list != NULL)
+	{
+		count++;
+		list = list->link;		
+	}
+	return count;
+}
+
+void DeleteData(Node *& list, int x)
+{
+	Node *pre, *p = list;
+	while(p!=NULL)
+	{
+		if (p->data != x)
+		{
+			pre = p;
+			p = p->link;
+		}
+		else
+		{
+			if (p == list)
+			{
+				list = list->link;
+				delete p;
+				p = list;
+			}
+			else
+			{
+				pre->link = p->link;
+				delete p;
+				p = pre->link;
+			}
+		}
+	}
+}
+
+void InsertData(Node *& list, int x)
+{
+	Node *p = list, *pre;
+	Node *pNew = new Node;
+	pNew->data = x;
+	
+	while(p != NULL)
+	{
+		if (p->data > x)
+		{
+			if (p == list)
+			{
+				pNew->link = list;
+				list = pNew;
+			}
+			else
+			{
+				pre->link = pNew;
+				pNew->link = p;
+			}			
+			return;
+		}
+		pre = p;
+		p = p->link;
+	}
+	if (list == NULL)
+	{
+		pNew->link = NULL;
+		list = pNew;
+	}
+	else
+	{
+		pre->link = pNew;
+		pNew->link = NULL;
+	}
+}
+
+int main()
+{
+	Node *list = NULL;
+	string s;
+	getline(cin, s);
+	
+	CreateList(list, s);
+	
+	while(cin >> s)
+	{
+		if (s == "end") break;
+		if (s == "dir")
+			ShowList(list);
+		else if (s == "rvs")
+			ReverseList(list);
+		else if (s == "ord")
+			SortList(list);			
+		else if (s == "dup")
+			DuplicationList(list);			
+		else if (s == "cnt")
+			cout << SizeList(list) << endl;			
+		else if (s == "del")
+		{
+			int x;
+			cin >> x;
+			DeleteData(list, x);			
+		}
+		else if (s == "ins")
+		{
+			int x;
+			cin >> x;
+			InsertData(list, x);
+		}
+	}
+	
+	return 0;
+}
