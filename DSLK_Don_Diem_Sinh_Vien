@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef  struct  Node {
+	string  name;  
+	int  marks;   
+	struct  Node *next;
+}List;
+//
+List* makeNode(string ten, int diem);
+void  InsertFirst(List *& head ,string  vname , int  vmarks);
+void  InsertLast(List *& head ,string  vname , int  vmarks);
+int  Count(List * head , int  vmarks);
+//
+int main() {
+    List *head = NULL;
+    string s;
+    while(true){
+    	cin >> s;
+    	string n; int m;
+    	if(s == "insF"){
+    		cin >> n; cin.ignore();
+    		cin >> m;
+    		InsertFirst(head,n,m);
+		}else if(s == "insL"){
+			cin >> n; cin.ignore();
+    		cin >> m;
+    		InsertLast(head,n,m);
+		}else if(s == "count"){
+			cin >> m;
+			cout << Count(head, m) << endl;
+		}else if(s == "fin")
+		 	break;
+	}
+    return 0;
+}
+
+//
+List* makeNode(string ten, int diem){
+	List *q = new Node();
+	q->name = ten;
+	q->marks = diem;
+	q->next = NULL;
+	return q;
+}
+//
+void  InsertFirst(List *& head ,string  vname , int  vmarks){
+	List *p = makeNode(vname,vmarks);
+	if(head == NULL)
+		head = p;
+	else{
+		p->next = head;
+		head = p;
+	}
+}
+//
+void  InsertLast(List *& head ,string  vname , int  vmarks){
+	List *p = makeNode(vname,vmarks);
+	if(head == NULL)
+		head = p;
+	else{
+		List *last = head;
+		while(last->next != NULL) last = last->next;
+		last->next = p;
+	}
+}
+//
+int  Count(List * head , int  vmarks){
+	List *p = head;
+	int cnt = 0; 
+	while(p != NULL){
+		if(p->marks >= vmarks) cnt++;
+		p = p->next;
+	}
+	return cnt;
+}
