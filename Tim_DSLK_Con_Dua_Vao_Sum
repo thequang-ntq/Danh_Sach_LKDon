@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int data;
+	node *next;
+};
+node *makenode(int x){
+	node *tam= new node();
+	tam->data=x;
+	tam->next=NULL;
+	return tam;
+}
+void inserts(node *&head, int x){
+	node *tam= makenode(x);
+	if(head==NULL) head=tam;
+	else{
+		node *q=head;
+		while(q->next!=NULL) q=q->next;
+		q->next=tam;
+	}
+}
+void duyet(node *head, int n){
+	node *q=head;
+	node *p=head;
+	int vt1=-1, vt2=-1;
+	while(q!=NULL){
+		int tong=q->data;
+		vt1++;
+		vt2=vt1;
+		p=q->next;
+		if(tong==n){
+			cout<<vt1<<" "<<vt2;
+			return;
+		}
+		while(p!=NULL){
+			tong+=p->data;
+			vt2++;
+		
+			if(tong==n){
+				cout<<vt1<<" "<<vt2;
+				return;
+			}
+			p=p->next;
+			
+		}
+		q=q->next;
+		tong=0;
+	}
+	cout<<-1;
+}
+
+int main(){
+	node *head=NULL;
+	int n, x;
+	cin>>n>>x;
+	for(int i=0;i<n;i++){
+		int d;
+		cin>>d;
+		inserts(head, d);
+	}
+
+	duyet(head, x);
+}
