@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct SinhVien {
+	float mon1;
+	float mon2;
+	float mon3;
+	float dtb;
+	char diemchu;
+};
+bool compareByScore(SinhVien a, SinhVien b){
+	return a.dtb > b.dtb;
+}
+int main() {
+	int n;
+	cin >> n;
+	cin.ignore();
+	vector<SinhVien> sinhvien(n);
+	for(int i = 0; i < n; i++) {
+		cin >> sinhvien[i].mon1 >> sinhvien[i].mon2 >> sinhvien[i].mon3;
+		cin.ignore();
+	}
+	for(int i = 0; i < n; i++) {
+		sinhvien[i].dtb =(sinhvien[i].mon1 + sinhvien[i].mon2 + sinhvien[i].mon3)/3;
+		char diemchu;
+		if(sinhvien[i].dtb >= 8.5) {
+			sinhvien[i].diemchu = 'A';
+		} else if(sinhvien[i].dtb >= 7.0) {
+			sinhvien[i].diemchu  = 'B';
+		} else if(sinhvien[i].dtb >= 5.5) {
+			sinhvien[i].diemchu  = 'C';
+		} else if(sinhvien[i].dtb >= 4.0) {
+			sinhvien[i].diemchu  = 'D';
+		} else {
+			sinhvien[i].diemchu  = 'F';
+		}
+	}
+	sort(sinhvien.begin(), sinhvien.end(), compareByScore);
+	for(int i = 0; i < n; i++){
+		cout << fixed << setprecision(2) << sinhvien[i].dtb << " " << sinhvien[i].diemchu << '\n';
+	}
+	return 0;
+}
