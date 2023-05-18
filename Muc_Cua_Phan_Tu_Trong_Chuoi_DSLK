@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+struct Node{
+    int data;
+    Node*next;
+};
+Node *createnode(int x){
+    Node *newnode= new Node;
+    newnode->data=x;
+    newnode->next=NULL;
+    return newnode;
+}
+void insertlast(Node *&head,int x){
+    Node *newnode=createnode(x);
+    Node *temp=head;
+    if(head==NULL){
+        head=createnode(x);
+    }else{
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=newnode;
+        newnode->next=NULL;
+    }
+   }
+void sapxep(Node *&head){
+    if(head==NULL){
+        return;
+    }
+    else{
+        for(Node *i=head;i->next!=NULL;i=i->next){
+              for(Node *j=i->next;j!=NULL;j=j->next){
+                  if(i->data>j->data){
+                      swap(i->data,j->data);
+                  }
+              }
+        }
+    }
+}
+void loaibotrunglap(Node *head){
+    Node *temp=head;
+  
+    while(temp!=NULL){
+        Node *tem=temp;
+        
+        while(tem->next!=NULL){
+            if(tem->next->data==temp->data){
+                Node *nodex=tem->next;
+                tem->next=tem->next->next;
+                delete nodex;
+            }else{
+                tem=tem->next;
+            }
+        }
+        temp=temp->next;
+       
+    }
+}
+
+int level_linkedlist(Node*head,int x){
+    int min=-99999;
+  
+    int chiso=1;
+    for(Node *p=head;p!=NULL;p=p->next){
+        if(p->data==x){
+            return chiso;
+        }else{
+            chiso++;
+        }
+    }
+    return -1;
+}
+int main(){
+    Node *f=NULL;
+    int n;
+    cin>>n;
+    int x;
+    cin>>x;
+    int k;
+    for(int i=0;i<n;i++){
+        cin>>k;
+        insertlast(f,k);
+    }
+    sapxep(f);
+    loaibotrunglap(f);
+    cout<<level_linkedlist(f,x);
+}
